@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Ops Hub - Plataforma Profissional</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <h2>Sales Ops Hub</h2>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#home" class="nav-link active">Documentos</a></li>
+            <li><a href="#tasks" class="nav-link">Atividades</a></li>
+            <li><a href="#notes" class="nav-link">Aprendizados</a></li>
+            <li><a href="#chat" class="nav-link">Assistente</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <!-- Seção de Pesquisa de Documentos -->
+        <section id="home" class="section active">
+            <h1>Pesquisa de Documentos Governamentais</h1>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Digite a sigla ou nome do documento (ex: CNDT, CPF, CNPJ...)">
+                <button onclick="searchDocument()">Pesquisar</button>
+            </div>
+            <div id="searchResults" class="results-container"></div>
+        </section>
+
+        <!-- Seção de Atividades -->
+        <section id="tasks" class="section">
+            <h1>Gestão de Atividades</h1>
+            <div class="task-input">
+                <input type="text" id="taskInput" placeholder="Nova atividade...">
+                <button onclick="addTask()">Adicionar</button>
+            </div>
+            <ul id="taskList" class="task-list"></ul>
+        </section>
+
+        <!-- Seção de Aprendizados -->
+        <section id="notes" class="section">
+            <h1>Base de Conhecimento Pessoal</h1>
+            <div class="notes-input">
+                <input type="text" id="noteTitle" placeholder="Título do aprendizado...">
+                <textarea id="noteContent" placeholder="Descreva o que você aprendeu..." rows="4"></textarea>
+                <div class="note-tags">
+                    <input type="text" id="noteTags" placeholder="Tags (ex: vendas, documentos, processo)">
+                    <button onclick="addNote()">Salvar Aprendizado</button>
+                </div>
+            </div>
+            <div class="notes-filter">
+                <input type="text" id="searchNotes" placeholder="Pesquisar aprendizados..." onkeyup="filterNotes()">
+                <select id="filterTags" onchange="filterNotes()">
+                    <option value="">Todas as tags</option>
+                </select>
+            </div>
+            <div id="notesList" class="notes-list"></div>
+        </section>
+
+        <!-- Seção de Chat -->
+        <section id="chat" class="section">
+            <h1>Assistente Inteligente</h1>
+            <div id="chatMessages" class="chat-messages"></div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Digite sua dúvida (ex: o que é faturamento?, como calcular ROI?)...">
+                <button onclick="sendMessage()">Enviar</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
