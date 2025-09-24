@@ -195,6 +195,200 @@ CPF: [CPF]`
             "Relatório Local (Local File)",
             "Declaração País-a-País (CbCR)"
         ]
+    },
+    {
+        acronym: "ALVARÁ",
+        name: "Alvará de Funcionamento",
+        description: "Licença municipal obrigatória para funcionamento de estabelecimentos comerciais, industriais e de prestação de serviços."
+    },
+    {
+        acronym: "LICENÇA AMBIENTAL",
+        name: "Licença Ambiental",
+        description: "Autorização para atividades que possam causar impacto ambiental. Tipos: LP (Prévia), LI (Instalação), LO (Operação)."
+    },
+    {
+        acronym: "CAGED",
+        name: "Cadastro Geral de Empregados e Desempregados",
+        description: "Registro mensal de admissões e demissões de empregados sob regime CLT."
+    },
+    {
+        acronym: "DIRF",
+        name: "Declaração do Imposto de Renda Retido na Fonte",
+        description: "Declaração anual de valores de IR retidos na fonte e pagamentos efetuados."
+    },
+    {
+        acronym: "DEFIS",
+        name: "Declaração de Informações Socioeconômicas e Fiscais",
+        description: "Declaração anual obrigatória para empresas optantes pelo Simples Nacional."
+    },
+    {
+        acronym: "DIPJ",
+        name: "Declaração de Informações Econômico-Fiscais da Pessoa Jurídica",
+        description: "Declaração anual de informações econômicas e fiscais para empresas do Lucro Real ou Presumido."
+    },
+    {
+        acronym: "SPED",
+        name: "Sistema Público de Escrituração Digital",
+        description: "Sistema que unifica atividades de recepção, validação e armazenamento de livros e documentos fiscais.",
+        documentList: [
+            "ECD - Escrituração Contábil Digital",
+            "ECF - Escrituração Contábil Fiscal",
+            "EFD-Contribuições",
+            "EFD-ICMS/IPI",
+            "EFD-Reinf",
+            "eSocial"
+        ]
+    },
+    {
+        acronym: "ESOCIAL",
+        name: "Sistema de Escrituração Digital das Obrigações Fiscais",
+        description: "Sistema que unifica o envio de informações trabalhistas, previdenciárias, tributárias e fiscais."
+    },
+    {
+        acronym: "CEIS",
+        name: "Cadastro Nacional de Empresas Inidôneas e Suspensas",
+        description: "Cadastro que relaciona pessoas físicas e jurídicas impedidas de participar de licitações."
+    },
+    {
+        acronym: "CNEP",
+        name: "Cadastro Nacional de Empresas Punidas",
+        description: "Cadastro de empresas punidas por atos contra a administração pública."
+    },
+    {
+        acronym: "SICAF",
+        name: "Sistema de Cadastramento Unificado de Fornecedores",
+        description: "Sistema para cadastro de fornecedores do governo federal."
+    },
+    {
+        acronym: "CRC",
+        name: "Certificado de Registro Cadastral",
+        description: "Documento que comprova inscrição no SICAF para participação em licitações federais."
+    },
+    {
+        acronym: "DECLARAÇÃO HIPOSSUFICIÊNCIA",
+        name: "Declaração de Hipossuficiência Econômica",
+        description: "Declaração para comprovação de baixa renda para isenções e benefícios.",
+        template: `DECLARAÇÃO DE HIPOSSUFICIÊNCIA ECONÔMICA
+
+Eu, [NOME COMPLETO], portador(a) do CPF nº [CPF], RG nº [RG], residente e domiciliado(a) na [ENDEREÇO COMPLETO], DECLARO, sob as penas da lei, que:
+
+1. Possuo renda familiar mensal de R$ [VALOR] ([VALOR POR EXTENSO]);
+
+2. Não possuo condições financeiras de arcar com as custas processuais e honorários advocatícios sem prejuízo do sustento próprio ou da família;
+
+3. Declaro ser economicamente hipossuficiente, fazendo jus aos benefícios da assistência judiciária gratuita;
+
+4. Estou ciente das penalidades por declaração falsa.
+
+Por ser verdade, firmo a presente declaração.
+
+[CIDADE], [DATA]
+
+_________________________________
+[NOME COMPLETO]
+CPF: [CPF]`
+    },
+    {
+        acronym: "DECLARAÇÃO UNIÃO ESTÁVEL",
+        name: "Declaração de União Estável",
+        description: "Declaração para comprovação de relacionamento em união estável.",
+        template: `DECLARAÇÃO DE UNIÃO ESTÁVEL
+
+Nós, [NOME COMPLETO 1], portador(a) do CPF nº [CPF 1], RG nº [RG 1], e [NOME COMPLETO 2], portador(a) do CPF nº [CPF 2], RG nº [RG 2], DECLARAMOS, sob as penas da lei, que:
+
+1. Vivemos em união estável desde [DATA DE INÍCIO];
+
+2. Constituímos família, mantendo relacionamento público, contínuo e duradouro;
+
+3. Temos o objetivo de constituir família;
+
+4. Não possuímos impedimentos legais para o casamento;
+
+5. Esta declaração é feita para os fins que se fizerem necessários.
+
+Por ser verdade, firmamos a presente declaração.
+
+[CIDADE], [DATA]
+
+_________________________________        _________________________________
+[NOME COMPLETO 1]                      [NOME COMPLETO 2]
+CPF: [CPF 1]                          CPF: [CPF 2]
+
+TESTEMUNHAS:
+
+_________________________________        _________________________________
+[NOME TESTEMUNHA 1]                    [NOME TESTEMUNHA 2]
+CPF: [CPF TESTEMUNHA 1]               CPF: [CPF TESTEMUNHA 2]`
+    },
+    {
+        acronym: "PROCURAÇÃO",
+        name: "Procuração Simples",
+        description: "Documento que outorga poderes para representação em atos específicos.",
+        template: `PROCURAÇÃO
+
+Eu, [NOME COMPLETO OUTORGANTE], [NACIONALIDADE], [ESTADO CIVIL], [PROFISSÃO], portador(a) do CPF nº [CPF], RG nº [RG], residente e domiciliado(a) na [ENDEREÇO COMPLETO], pelo presente instrumento, nomeio e constituo meu bastante procurador(a) [NOME COMPLETO OUTORGADO], [NACIONALIDADE], [ESTADO CIVIL], [PROFISSÃO], portador(a) do CPF nº [CPF OUTORGADO], RG nº [RG OUTORGADO], residente na [ENDEREÇO OUTORGADO], a quem confiro poderes para:
+
+[ESPECIFICAR OS PODERES - ex: representar-me perante órgãos públicos, assinar documentos, etc.]
+
+Esta procuração é válida até [DATA DE VALIDADE] e poderá ser revogada a qualquer tempo.
+
+Por ser verdade, firmo a presente procuração.
+
+[CIDADE], [DATA]
+
+_________________________________
+[NOME COMPLETO OUTORGANTE]
+Outorgante`
+    },
+    {
+        acronym: "CTPS",
+        name: "Carteira de Trabalho e Previdência Social",
+        description: "Documento obrigatório para o trabalhador brasileiro, registra vínculos empregatícios e contribuições previdenciárias."
+    },
+    {
+        acronym: "PIS",
+        name: "Programa de Integração Social",
+        description: "Cadastro do trabalhador para recebimento de benefícios como abono salarial e seguro-desemprego."
+    },
+    {
+        acronym: "PASEP",
+        name: "Programa de Formação do Patrimônio do Servidor Público",
+        description: "Equivalente ao PIS para servidores públicos federais."
+    },
+    {
+        acronym: "CBO",
+        name: "Classificação Brasileira de Ocupações",
+        description: "Sistema que classifica as ocupações do mercado de trabalho brasileiro."
+    },
+    {
+        acronym: "CIPA",
+        name: "Comissão Interna de Prevenção de Acidentes",
+        description: "Comissão obrigatória em empresas para prevenção de acidentes e doenças do trabalho."
+    },
+    {
+        acronym: "PPRA",
+        name: "Programa de Prevenção de Riscos Ambientais",
+        description: "Programa obrigatório que visa preservar a saúde dos trabalhadores através da antecipação e controle de riscos."
+    },
+    {
+        acronym: "PCMSO",
+        name: "Programa de Controle Médico de Saúde Ocupacional",
+        description: "Programa que estabelece diretrizes para controle médico dos trabalhadores."
+    },
+    {
+        acronym: "CAT",
+        name: "Comunicação de Acidente do Trabalho",
+        description: "Documento para comunicar acidentes de trabalho à Previdência Social."
+    },
+    {
+        acronym: "LTCAT",
+        name: "Laudo Técnico das Condições Ambientais do Trabalho",
+        description: "Laudo que comprova exposição a agentes nocivos para fins de aposentadoria especial."
+    },
+    {
+        acronym: "PPP",
+        name: "Perfil Profissiográfico Previdenciário",
+        description: "Documento que comprova condições de trabalho do empregado para fins previdenciários."
     }
 ];
 
@@ -275,7 +469,12 @@ function searchDocument() {
         doc.acronym.toLowerCase().includes(searchTerm) ||
         doc.name.toLowerCase().includes(searchTerm) ||
         (searchTerm.includes('multinacional') && doc.acronym === 'MULTINACIONAL') ||
-        (searchTerm.includes('empresa estrangeira') && doc.acronym === 'MULTINACIONAL')
+        (searchTerm.includes('empresa estrangeira') && doc.acronym === 'MULTINACIONAL') ||
+        (searchTerm.includes('trabalho') && ['CTPS', 'PIS', 'CIPA', 'PPRA', 'CAT'].includes(doc.acronym)) ||
+        (searchTerm.includes('saude') && ['PCMSO', 'PPRA', 'CIPA'].includes(doc.acronym)) ||
+        (searchTerm.includes('ambiental') && ['LICENÇA AMBIENTAL', 'PPRA'].includes(doc.acronym)) ||
+        (searchTerm.includes('declaracao') && doc.name.toLowerCase().includes('declaração')) ||
+        (searchTerm.includes('procuracao') && doc.acronym === 'PROCURAÇÃO')
     );
     
     if (results.length === 0) {
