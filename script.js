@@ -233,10 +233,11 @@ document.addEventListener('DOMContentLoaded', function() {
     renderNotes();
     updateTagsFilter();
     
-    // Mensagem inicial do chat
+    // Mensagem inicial do chat com IA melhorada
     setTimeout(() => {
-        addChatMessage('Olá! 🚀 Sou seu assistente virtual para dúvidas sobre negócios, sales ops, documentação e muito mais!\n\nPosso explicar termos como: faturamento, ROI, KPI, pipeline, CRM, CNDT, transfer pricing, etc.\n\nQual sua dúvida?', 'bot');
+        addChatMessage('🚀 **IA INTELIGENTE ATIVADA!**\n\nOlá! Sou sua assistente com sistema de IA aprimorado!\n\n🧠 **Capacidades avançadas:**\n• Detecção de contexto\n• Respostas personalizadas\n• Sistema de pontuação inteligente\n• Base expandida de conhecimento\n\n💡 **Posso responder sobre:**\n• 🔬 Ciência e tecnologia\n• 📚 História e cultura\n• 🎨 Arte e literatura\n• ⚽ Esportes e entretenimento\n• 💰 Economia e negócios\n• 🌱 Meio ambiente\n• 🏥 Saúde e medicina\n\n✨ Faça qualquer pergunta - minha IA está pronta!', 'bot');
     }, 500);
+
     
     // Event listener para Enter na pesquisa
     document.getElementById('searchInput').addEventListener('keypress', function(e) {
@@ -438,16 +439,15 @@ function renderNotes() {
     }
     
     const notesHTML = filteredNotes.map(note => `
-        <div class="note-card">
+        <div class="note-card" onclick="viewNote(${note.id})" style="cursor: pointer;">
             <div class="note-header">
                 <h3 class="note-title">${note.title}</h3>
                 <span class="note-date">${note.timestamp}</span>
             </div>
-            <div class="note-content">${note.content}</div>
             <div class="note-tags-display">
                 ${note.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
             </div>
-            <div class="note-actions">
+            <div class="note-actions" onclick="event.stopPropagation()">
                 <button class="btn-edit" onclick="editNote(${note.id})">Editar</button>
                 <button class="btn-delete" onclick="deleteNote(${note.id})">Excluir</button>
             </div>
@@ -502,6 +502,32 @@ function saveNotes() {
     localStorage.setItem('notes', JSON.stringify(notes));
 }
 
+// Função para visualizar aprendizado no modal
+function viewNote(id) {
+    const note = notes.find(n => n.id === id);
+    if (!note) return;
+    
+    document.getElementById('modalTitle').textContent = note.title;
+    document.getElementById('modalContent').textContent = note.content;
+    document.getElementById('modalTags').innerHTML = note.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+    document.getElementById('modalDate').textContent = `Criado em: ${note.timestamp}`;
+    
+    document.getElementById('noteModal').style.display = 'block';
+}
+
+// Função para fechar modal
+function closeNoteModal() {
+    document.getElementById('noteModal').style.display = 'none';
+}
+
+// Fechar modal clicando fora
+window.onclick = function(event) {
+    const modal = document.getElementById('noteModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+}
+
 // Função para copiar modelo de declaração
 function copyTemplate(acronym) {
     const doc = documents.find(d => d.acronym === acronym);
@@ -523,7 +549,7 @@ function copyTemplate(acronym) {
     }
 }
 
-// Base de conhecimento expandida para o chat
+// Base de conhecimento universal expandida
 const chatKnowledge = {
     // Documentação
     'cndt': 'CNDT é a Certidão Negativa de Débitos Trabalhistas. Emitida pelo TST, comprova que não há débitos trabalhistas. Validade: 180 dias.',
@@ -697,7 +723,253 @@ const chatKnowledge = {
     'hotfix': 'Hotfix é correção urgente de problema crítico. Geralmente bypassa processos normais.',
     'rollback': 'Rollback é reverter para versão anterior quando algo dá errado. Plano de contingência importante.',
     'incident': 'Incident (incidente) é evento não planejado que causa ou pode causar interrupção de serviço.',
-    'postmortem': 'Postmortem é análise após incidente para identificar causas e melhorias. Aprendizado importante.'
+    'postmortem': 'Postmortem é análise após incidente para identificar causas e melhorias. Aprendizado importante.',
+    
+    // === CIÊNCIAS E TECNOLOGIA ===
+    'inteligência artificial': 'Inteligência Artificial (IA) é tecnologia que permite máquinas simularem inteligência humana, incluindo aprendizado, raciocínio e percepção.',
+    'machine learning': 'Machine Learning é subcampo da IA onde sistemas aprendem automaticamente com dados sem programação explícita.',
+    'blockchain': 'Blockchain é tecnologia de registro distribuído que mantém lista crescente de registros (blocos) ligados criptograficamente.',
+    'criptomoeda': 'Criptomoeda é moeda digital que usa criptografia para segurança. Bitcoin foi a primeira, criada em 2009.',
+    'bitcoin': 'Bitcoin é primeira criptomoeda descentralizada, criada por Satoshi Nakamoto em 2009. Funciona sem banco central.',
+    'fotossíntese': 'Fotossíntese é processo onde plantas convertem luz solar, CO2 e água em glicose e oxigênio. Fundamental para vida na Terra.',
+    'dna': 'DNA (Ácido Desoxirribonucleico) carrega informações genéticas de todos os seres vivos. Estrutura em dupla hélice descoberta em 1953.',
+    'teoria da relatividade': 'Teoria da Relatividade de Einstein revolucionou física. E=mc² mostra equivalência entre massa e energia.',
+    'buraco negro': 'Buraco negro é região do espaço onde gravidade é tão forte que nem luz escapa. Formado pelo colapso de estrelas massivas.',
+    'mudança climática': 'Mudança climática refere-se a alterações de longo prazo nos padrões climáticos, principalmente causadas por atividades humanas.',
+    'energia renovável': 'Energia renovável vem de fontes naturais que se renovam: solar, eólica, hidrelétrica, geotérmica e biomassa.',
+    'quantum': 'Física quântica estuda comportamento de partículas subatômicas. Princípios incluem superposição e entrelaçamento quântico.',
+    'crispr': 'CRISPR é tecnologia de edição genética que permite modificar DNA com precisão. Revolucionou biotecnologia.',
+    'internet das coisas': 'IoT (Internet das Coisas) conecta objetos físicos à internet, permitindo coleta e troca de dados.',
+    'realidade virtual': 'Realidade Virtual (VR) cria ambiente completamente digital imersivo usando óculos especiais.',
+    'realidade aumentada': 'Realidade Aumentada (AR) sobrepõe elementos digitais ao mundo real, como filtros do Instagram.',
+    '5g': '5G é quinta geração de tecnologia móvel, oferecendo velocidades até 100x mais rápidas que 4G.',
+    'computação quântica': 'Computação quântica usa princípios da mecânica quântica para processar informações de forma exponencialmente mais rápida.',
+    
+    // === HISTÓRIA E CULTURA ===
+    'segunda guerra mundial': 'Segunda Guerra Mundial (1939-1945) foi maior conflito da história, envolvendo mais de 30 países. Terminou com vitória dos Aliados.',
+    'revolução industrial': 'Revolução Industrial (séc. XVIII-XIX) transformou sociedade agrária em industrial, com máquinas a vapor e produção em massa.',
+    'descobrimento do brasil': 'Brasil foi "descoberto" por Pedro Álvares Cabral em 22 de abril de 1500, embora já fosse habitado por povos indígenas.',
+    'independência do brasil': 'Independência do Brasil foi proclamada por Dom Pedro I em 7 de setembro de 1822, às margens do rio Ipiranga.',
+    'abolição da escravatura': 'Escravidão foi abolida no Brasil em 13 de maio de 1888 pela Lei Áurea, assinada pela Princesa Isabel.',
+    'proclamação da república': 'República foi proclamada no Brasil em 15 de novembro de 1889 pelo Marechal Deodoro da Fonseca.',
+    'renascimento': 'Renascimento (séc. XIV-XVI) foi período de renovação cultural na Europa, com foco no humanismo e arte clássica.',
+    'idade média': 'Idade Média (séc. V-XV) período entre queda do Império Romano e Renascimento, caracterizado pelo feudalismo.',
+    'civilização egípcia': 'Antigo Egito durou cerca de 3000 anos, famoso pelas pirâmides, faraós e hieróglifos ao longo do Rio Nilo.',
+    'império romano': 'Império Romano dominou grande parte do mundo conhecido por séculos, deixando legado em direito, arquitetura e línguas.',
+    'grécia antiga': 'Grécia Antiga berço da democracia, filosofia e teatro. Atenas e Esparta foram principais cidades-estado.',
+    'civilização maia': 'Maias desenvolveram avançado sistema de escrita, astronomia e matemática na Mesoamérica (300-900 d.C.).',
+    'império inca': 'Império Inca foi maior império da América pré-colombiana, centrado nos Andes, com capital em Cusco.',
+    'guerra fria': 'Guerra Fria (1947-1991) foi tensão geopolítica entre EUA e URSS, sem conflito militar direto.',
+    'queda do muro de berlim': 'Muro de Berlim caiu em 9 de novembro de 1989, simbolizando fim da Guerra Fria e reunificação alemã.',
+    
+    // === GEOGRAFIA E NATUREZA ===
+    'amazônia': 'Amazônia é maior floresta tropical do mundo, cobrindo 60% do território brasileiro. Chamada de "pulmão do mundo".',
+    'pantanal': 'Pantanal é maior planície alagável do mundo, localizada principalmente no Mato Grosso e Mato Grosso do Sul.',
+    'cerrado': 'Cerrado é savana tropical brasileira, segundo maior bioma do país, conhecido pela biodiversidade única.',
+    'caatinga': 'Caatinga é bioma exclusivamente brasileiro, adaptado ao clima semiárido do Nordeste.',
+    'mata atlântica': 'Mata Atlântica é bioma brasileiro altamente ameaçado, restando apenas 12% da cobertura original.',
+    'placas tectônicas': 'Placas tectônicas são grandes blocos rochosos que formam crosta terrestre. Movimento causa terremotos e vulcões.',
+    'ciclo da água': 'Ciclo da água é movimento contínuo da água: evaporação, condensação, precipitação e infiltração.',
+    'efeito estufa': 'Efeito estufa é processo natural que aquece Terra. Gases como CO2 intensificam o efeito, causando aquecimento global.',
+    'camada de ozônio': 'Camada de ozônio protege Terra da radiação ultravioleta. Localizada na estratosfera, 15-35 km de altitude.',
+    'biodiversidade': 'Biodiversidade é variedade de vida na Terra: espécies, genes e ecossistemas. Brasil é país mais biodiverso.',
+    'extinção': 'Extinção é desaparecimento completo de espécie. Atualmente vivemos sexta extinção em massa, causada por humanos.',
+    'evolução': 'Evolução é processo de mudança das espécies ao longo do tempo. Teoria de Darwin explica através seleção natural.',
+    'ecossistema': 'Ecossistema é conjunto de seres vivos e ambiente físico que interagem em determinada área.',
+    'cadeia alimentar': 'Cadeia alimentar mostra fluxo de energia: produtores → consumidores primários → secundários → decompositores.',
+    
+    // === MATEMÁTICA E FÍSICA ===
+    'teorema de pitágoras': 'Teorema de Pitágoras: em triângulo retângulo, quadrado da hipotenusa = soma dos quadrados dos catetos (a² + b² = c²).',
+    'número pi': 'Pi (π) é razão entre circunferência e diâmetro de qualquer círculo. Aproximadamente 3,14159...',
+    'número de euler': 'Número de Euler (e) é base do logaritmo natural, aproximadamente 2,71828. Fundamental em cálculo.',
+    'sequência fibonacci': 'Sequência Fibonacci: cada número é soma dos dois anteriores (0,1,1,2,3,5,8,13...). Aparece na natureza.',
+    'geometria': 'Geometria estuda formas, tamanhos e propriedades de figuras no espaço. Ramos: plana, espacial, analítica.',
+    'álgebra': 'Álgebra usa símbolos (letras) para representar números em equações e fórmulas matemáticas.',
+    'cálculo': 'Cálculo estuda mudanças contínuas através derivadas (taxa de variação) e integrais (área sob curvas).',
+    'estatística': 'Estatística coleta, organiza e interpreta dados para tomar decisões baseadas em evidências.',
+    'probabilidade': 'Probabilidade mede chance de evento ocorrer, expressa entre 0 (impossível) e 1 (certo).',
+    'lei da gravidade': 'Lei da Gravidade de Newton: força entre objetos é proporcional às massas e inversamente ao quadrado da distância.',
+    'leis de newton': 'Três Leis de Newton: 1) Inércia 2) F=ma 3) Ação e reação. Fundamentais para mecânica clássica.',
+    'velocidade da luz': 'Velocidade da luz no vácuo é 299.792.458 m/s. Constante universal, nada pode ser mais rápido.',
+    'energia': 'Energia é capacidade de realizar trabalho. Formas: cinética, potencial, térmica, elétrica, nuclear.',
+    'átomo': 'Átomo é menor unidade da matéria. Composto por núcleo (prótons e nêutrons) e elétrons orbitando.',
+    'tabela periódica': 'Tabela Periódica organiza elementos químicos por número atômico. Criada por Mendeleev em 1869.',
+    
+    // === ARTE E LITERATURA ===
+    'renascimento artístico': 'Renascimento artístico valorizou realismo, perspectiva e anatomia. Leonardo da Vinci, Michelangelo principais nomes.',
+    'impressionismo': 'Impressionismo (séc. XIX) movimento artístico que capturava impressões de luz e cor. Monet, Renoir principais.',
+    'barroco': 'Barroco (séc. XVII) estilo artístico dramático, ornamentado, com contrastes de luz. Aleijadinho no Brasil.',
+    'modernismo': 'Modernismo brasileiro (1922) rompeu com tradições. Semana de Arte Moderna marco inicial.',
+    'literatura brasileira': 'Literatura brasileira rica: Machado de Assis, Clarice Lispector, Guimarães Rosa entre grandes nomes.',
+    'dom casmurro': 'Dom Casmurro (1899) obra-prima de Machado de Assis. Narra ciúme de Bentinho por Capitu.',
+    'o cortiço': 'O Cortiço (1890) de Aluísio Azevedo. Romance naturalista retrata vida em habitação coletiva no Rio.',
+    'grande sertão veredas': 'Grande Sertão: Veredas (1956) de Guimarães Rosa. Obra-prima sobre sertão mineiro e jagunço Riobaldo.',
+    'shakespeare': 'William Shakespeare (1564-1616) maior dramaturgo inglês. Romeu e Julieta, Hamlet obras famosas.',
+    'leonardo da vinci': 'Leonardo da Vinci (1452-1519) gênio renascentista: pintor (Mona Lisa), inventor, cientista.',
+    'van gogh': 'Vincent van Gogh (1853-1890) pintor pós-impressionista holandês. Noite Estrelada obra icônica.',
+    'picasso': 'Pablo Picasso (1881-1973) artista espanhol, co-criador do cubismo. Guernica obra anti-guerra famosa.',
+    
+    // === SAÚDE E MEDICINA ===
+    'sistema imunológico': 'Sistema imunológico defende corpo contra patógenos. Inclui glóbulos brancos, anticorpos e órgãos linfáticos.',
+    'vitaminas': 'Vitaminas são nutrientes essenciais em pequenas quantidades. Hidrossolúveis (B,C) e lipossolúveis (A,D,E,K).',
+    'proteínas': 'Proteínas são macromoléculas formadas por aminoácidos. Funções: estrutural, enzimática, transporte.',
+    'carboidratos': 'Carboidratos são principal fonte de energia. Simples (açúcares) e complexos (amidos, fibras).',
+    'gorduras': 'Gorduras (lipídios) fornecem energia, isolamento térmico. Saturadas, insaturadas, trans.',
+    'exercício físico': 'Exercício físico melhora saúde cardiovascular, força muscular, humor e longevidade.',
+    'sono': 'Sono é essencial para recuperação física e mental. Adultos precisam 7-9 horas por noite.',
+    'estresse': 'Estresse é resposta do corpo a desafios. Crônico pode causar problemas de saúde.',
+    'meditação': 'Meditação é prática de foco mental que reduz estresse, ansiedade e melhora bem-estar.',
+    'alimentação saudável': 'Alimentação saudável inclui variedade: frutas, vegetais, grãos integrais, proteínas magras.',
+    'hidratação': 'Hidratação adequada é vital. Adultos devem beber cerca de 2 litros de água por dia.',
+    'vacinas': 'Vacinas estimulam sistema imunológico a criar proteção contra doenças específicas.',
+    
+    // === CULINÁRIA ===
+    'culinária brasileira': 'Culinária brasileira mistura influências indígena, africana e europeia. Feijoada prato nacional.',
+    'feijoada': 'Feijoada é prato brasileiro com feijão preto, carnes de porco e acompanhamentos. Tradição aos sábados.',
+    'pão de açúcar': 'Pão de Açúcar é morro icônico do Rio de Janeiro, com 396m de altura. Bondinho leva turistas ao topo.',
+    'açaí': 'Açaí é fruto amazônico rico em antioxidantes. Consumido como polpa doce ou salgada.',
+    'brigadeiro': 'Brigadeiro é doce brasileiro feito com leite condensado, chocolate e manteiga. Criado nos anos 1940.',
+    'coxinha': 'Coxinha é salgado brasileiro em formato de coxa de galinha, recheado tradicionalmente com frango.',
+    'pastel': 'Pastel é massa frita recheada, popular em feiras brasileiras. Acompanha caldo de cana.',
+    'caipirinha': 'Caipirinha é drink nacional brasileiro feito com cachaça, limão, açúcar e gelo.',
+    'churrasco': 'Churrasco é método de cozinhar carne na brasa, muito popular no Sul do Brasil.',
+    'tapioca': 'Tapioca é iguaria nordestina feita com goma de mandioca, pode ser doce ou salgada.',
+    
+    // === ESPORTES ===
+    'futebol': 'Futebol é esporte mais popular do mundo. Brasil pentacampeão mundial (1958,1962,1970,1994,2002).',
+    'pelé': 'Pelé (1940-2022) considerado maior jogador de futebol de todos os tempos. Único tricampeão mundial.',
+    'copa do mundo': 'Copa do Mundo FIFA acontece a cada 4 anos desde 1930. Brasil país com mais títulos (5).',
+    'olimpíadas': 'Jogos Olímpicos são maior evento esportivo mundial, realizados a cada 4 anos desde 1896.',
+    'basquete': 'Basquete foi inventado em 1891 por James Naismith. Objetivo: acertar bola na cesta adversária.',
+    'vôlei': 'Vôlei foi criado em 1895. Brasil potência mundial, com títulos olímpicos masculino e feminino.',
+    'tênis': 'Tênis é esporte individual ou duplas. Grand Slams: Wimbledon, US Open, Roland Garros, Australian Open.',
+    'fórmula 1': 'Fórmula 1 é categoria máxima do automobilismo. Ayrton Senna maior ídolo brasileiro.',
+    'natação': 'Natação é esporte completo que trabalha todo corpo. Estilos: crawl, costas, peito, borboleta.',
+    'atletismo': 'Atletismo inclui corridas, saltos e arremessos. Considerado esporte-base de todos os outros.',
+    
+    // === IDIOMAS ===
+    'português': 'Português é língua oficial do Brasil, falada por 260 milhões de pessoas mundialmente.',
+    'inglês': 'Inglês é língua franca mundial, falada por 1,5 bilhão de pessoas como primeira ou segunda língua.',
+    'espanhol': 'Espanhol é segunda língua mais falada no mundo, oficial em 21 países.',
+    'francês': 'Francês é língua românica falada por 280 milhões de pessoas, oficial em 29 países.',
+    'mandarim': 'Mandarim é língua mais falada do mundo, com 918 milhões de falantes nativos na China.',
+    'alemão': 'Alemão é língua germânica falada por 100 milhões de pessoas, principalmente na Alemanha.',
+    'japonês': 'Japonês é língua isolada falada por 125 milhões de pessoas, principalmente no Japão.',
+    'árabe': 'Árabe é língua semítica falada por 400 milhões de pessoas em 22 países.',
+    'russo': 'Russo é língua eslava falada por 260 milhões de pessoas, oficial na Rússia.',
+    'italiano': 'Italiano é língua românica falada por 65 milhões de pessoas, principalmente na Itália.',
+    
+    // === FILOSOFIA E PSICOLOGIA ===
+    'filosofia': 'Filosofia é estudo de questões fundamentais sobre existência, conhecimento, valores e razão.',
+    'sócrates': 'Sócrates (470-399 a.C.) filósofo grego, criador do método socrático. "Só sei que nada sei".',
+    'platão': 'Platão (428-348 a.C.) discípulo de Sócrates, criou teoria das ideias e Academia de Atenas.',
+    'aristóteles': 'Aristóteles (384-322 a.C.) discípulo de Platão, criou lógica formal e classificação das ciências.',
+    'psicologia': 'Psicologia é ciência que estuda comportamento e processos mentais humanos.',
+    'freud': 'Sigmund Freud (1856-1939) criador da psicanálise, estudou inconsciente e interpretação dos sonhos.',
+    'jung': 'Carl Jung (1875-1961) psicólogo suíço, criou conceitos de inconsciente coletivo e arquétipos.',
+    'behaviorismo': 'Behaviorismo foca no comportamento observável, ignorando processos mentais internos.',
+    'cognitivismo': 'Cognitivismo estuda processos mentais como percepção, memória, pensamento e linguagem.',
+    'humanismo': 'Humanismo psicológico enfatiza potencial humano, crescimento pessoal e autorrealização.',
+    
+    // === ECONOMIA ===
+    'inflação': 'Inflação é aumento generalizado de preços. Reduz poder de compra da moeda.',
+    'pib': 'PIB (Produto Interno Bruto) mede valor total de bens e serviços produzidos em país.',
+    'juros': 'Juros são custo do dinheiro emprestado. Taxa Selic é juro básico da economia brasileira.',
+    'câmbio': 'Câmbio é troca de moedas. Taxa de câmbio define valor de moeda em relação a outra.',
+    'bolsa de valores': 'Bolsa de valores é mercado onde se negociam ações de empresas públicas.',
+    'ações': 'Ações representam pequena parte de empresa. Acionistas são donos proporcionais.',
+    'dividendos': 'Dividendos são parte dos lucros distribuída aos acionistas pelas empresas.',
+    'renda fixa': 'Renda fixa são investimentos com rentabilidade previsível: poupança, CDB, títulos públicos.',
+    'renda variável': 'Renda variável são investimentos sem rentabilidade garantida: ações, fundos imobiliários.',
+    'criptomoedas': 'Criptomoedas são moedas digitais descentralizadas baseadas em blockchain.',
+    
+    // === RELIGIÃO E MITOLOGIA ===
+    'cristianismo': 'Cristianismo é maior religião mundial, baseada nos ensinamentos de Jesus Cristo.',
+    'islamismo': 'Islamismo é segunda maior religião, baseada no Alcorão e ensinamentos do profeta Maomé.',
+    'budismo': 'Budismo é religião/filosofia baseada nos ensinamentos de Buda sobre fim do sofrimento.',
+    'hinduísmo': 'Hinduísmo é religião mais antiga ainda praticada, com conceitos de karma e reencarnação.',
+    'judaísmo': 'Judaísmo é religião monoteísta dos judeus, baseada na Torá e tradições.',
+    'mitologia grega': 'Mitologia grega inclui deuses como Zeus, Atena, Apolo e heróis como Hércules.',
+    'mitologia nórdica': 'Mitologia nórdica inclui deuses como Odin, Thor e conceito de Ragnarök.',
+    'mitologia brasileira': 'Mitologia brasileira inclui lendas como Curupira, Saci, Iara e Boitatá.',
+    
+    // === MÚSICA ===
+    'música clássica': 'Música clássica inclui compositores como Bach, Mozart, Beethoven. Período áureo séc. XVIII-XIX.',
+    'bossa nova': 'Bossa Nova é gênero musical brasileiro criado nos anos 1950. Tom Jobim e João Gilberto pioneiros.',
+    'samba': 'Samba é gênero musical brasileiro nascido no Rio de Janeiro, símbolo cultural nacional.',
+    'rock': 'Rock surgiu nos anos 1950 nos EUA. Elvis Presley, Beatles, Rolling Stones ícones.',
+    'jazz': 'Jazz nasceu nos EUA no início séc. XX. Louis Armstrong, Miles Davis grandes nomes.',
+    'reggae': 'Reggae é gênero jamaicano popularizado por Bob Marley, com mensagens sociais.',
+    'hip hop': 'Hip Hop nasceu nos anos 1970 no Bronx, inclui rap, DJ, breakdance e grafite.',
+    'eletrônica': 'Música eletrônica usa instrumentos eletrônicos e computadores. House, techno, trance subgêneros.',
+    
+    // === CINEMA E TV ===
+    'cinema': 'Cinema nasceu em 1895 com irmãos Lumière. Hollywood centro da indústria cinematográfica.',
+    'oscar': 'Oscar é principal premiação do cinema mundial, entregue pela Academia de Artes e Ciências Cinematográficas.',
+    'netflix': 'Netflix revolucionou entretenimento com streaming de filmes e séries sob demanda.',
+    'disney': 'Disney é gigante do entretenimento, criadora de Mickey Mouse e filmes de animação clássicos.',
+    'marvel': 'Marvel criou universo de super-heróis: Homem-Aranha, X-Men, Vingadores.',
+    'dc comics': 'DC Comics criou Superman, Batman, Mulher-Maravilha e Liga da Justiça.',
+    
+    // === ASTRONOMIA ===
+    'sistema solar': 'Sistema Solar tem 8 planetas orbitando o Sol: Mercúrio, Vênus, Terra, Marte, Júpiter, Saturno, Urano, Netuno.',
+    'via láctea': 'Via Láctea é nossa galáxia, com 100-400 bilhões de estrelas. Sol está em braço espiral.',
+    'big bang': 'Big Bang é teoria sobre origem do universo há 13,8 bilhões de anos.',
+    'estrelas': 'Estrelas são esferas de plasma que produzem energia por fusão nuclear. Sol é estrela média.',
+    'planetas': 'Planetas são corpos celestes que orbitam estrelas. Terra é único conhecido com vida.',
+    'lua': 'Lua é satélite natural da Terra, influencia marés e estabiliza rotação terrestre.',
+    'marte': 'Marte é quarto planeta do Sistema Solar, conhecido como "planeta vermelho" devido ao óxido de ferro.',
+    'júpiter': 'Júpiter é maior planeta do Sistema Solar, gigante gasoso com mais de 70 luas.',
+    'saturno': 'Saturno é famoso pelos anéis, segundo maior planeta, também gigante gasoso.',
+    'telescópio': 'Telescópio amplifica luz de objetos distantes. Hubble revolucionou astronomia.',
+    
+    // === MEIO AMBIENTE ===
+    'sustentabilidade': 'Sustentabilidade é usar recursos sem comprometer gerações futuras. Equilibra economia, sociedade e ambiente.',
+    'reciclagem': 'Reciclagem transforma resíduos em novos produtos, reduzindo lixo e conservando recursos.',
+    'energia solar': 'Energia solar converte luz do sol em eletricidade através de painéis fotovoltaicos.',
+    'energia eólica': 'Energia eólica usa vento para gerar eletricidade através de turbinas.',
+    'aquecimento global': 'Aquecimento global é aumento da temperatura média da Terra devido a gases estufa.',
+    'desmatamento': 'Desmatamento é remoção de florestas, principal causa perda de biodiversidade.',
+    'poluição': 'Poluição contamina ar, água e solo com substâncias nocivas à saúde e ambiente.',
+    'lixo eletrônico': 'Lixo eletrônico são equipamentos descartados. Contém metais pesados tóxicos.',
+    'compostagem': 'Compostagem transforma restos orgânicos em adubo natural através de decomposição.',
+    'pegada de carbono': 'Pegada de carbono mede quantidade de CO2 emitida por atividades humanas.',
+    
+    // === DIREITO ===
+    'constituição': 'Constituição é lei fundamental que organiza Estado e garante direitos fundamentais.',
+    'direitos humanos': 'Direitos humanos são direitos inerentes a todos os seres humanos, universais e inalienáveis.',
+    'democracia': 'Democracia é sistema político onde poder emana do povo, exercido direta ou indiretamente.',
+    'justiça': 'Justiça é princípio moral de dar a cada um o que lhe é devido.',
+    'lei': 'Lei é norma jurídica obrigatória criada pelo poder legislativo.',
+    'crime': 'Crime é conduta proibida por lei com pena prevista.',
+    'processo': 'Processo é sequência de atos para resolver conflito no Judiciário.',
+    'advogado': 'Advogado é profissional que representa interesses de clientes no sistema jurídico.',
+    'juiz': 'Juiz é autoridade que aplica lei para resolver conflitos e julgar crimes.',
+    'tribunal': 'Tribunal é órgão colegiado do Poder Judiciário que julga recursos.',
+    
+    // === EDUCAÇÃO ===
+    'pedagogia': 'Pedagogia é ciência que estuda educação, ensino e aprendizagem.',
+    'didática': 'Didática é arte e técnica de ensinar, parte da pedagogia.',
+    'currículo': 'Currículo é conjunto de disciplinas e atividades de curso educacional.',
+    'avaliação': 'Avaliação educacional mede aprendizagem e orienta processo pedagógico.',
+    'inclusão': 'Inclusão educacional garante acesso e permanência de todos na escola.',
+    'enem': 'ENEM é Exame Nacional do Ensino Médio, usado para acesso ao ensino superior.',
+    'vestibular': 'Vestibular é exame para ingresso em universidades.',
+    'ensino superior': 'Ensino superior inclui graduação, pós-graduação, mestrado e doutorado.',
+    'ead': 'EAD (Educação a Distância) usa tecnologia para ensino remoto.',
+    'alfabetização': 'Alfabetização é processo de aprender a ler e escrever.',
+    
+    // === ARQUITETURA ===
+    'arquitetura': 'Arquitetura é arte e ciência de projetar e construir edifícios.',
+    'oscar niemeyer': 'Oscar Niemeyer (1907-2012) arquiteto brasileiro, projetou Brasília e edifícios icônicos.',
+    'brasília': 'Brasília foi planejada por Lúcio Costa e Oscar Niemeyer, inaugurada em 1960.',
+    'bauhaus': 'Bauhaus foi escola alemã que revolucionou design e arquitetura moderna.',
+    'le corbusier': 'Le Corbusier (1887-1965) arquiteto suíço, pioneiro da arquitetura moderna.',
+    'frank lloyd wright': 'Frank Lloyd Wright (1867-1959) arquiteto americano, criador da arquitetura orgânica.',
+    'gótico': 'Gótico é estilo arquitetônico medieval com arcos ogivais e vitrais coloridos.',
+    'barroco arquitetônico': 'Barroco arquitetônico é estilo ornamentado dos séculos XVII-XVIII.',
+    'modernismo arquitetônico': 'Modernismo arquitetônico valoriza funcionalidade, linhas retas e materiais industriais.',
+    'sustentável': 'Arquitetura sustentável minimiza impacto ambiental usando materiais e técnicas ecológicas.'
 };
 
 // Função para enviar mensagem no chat
@@ -711,15 +983,15 @@ function sendMessage() {
     addChatMessage(message, 'user');
     chatInput.value = '';
     
-    // Simular digitando
+    // Simular processamento da IA
     addTypingIndicator();
     
-    // Resposta do bot após delay
+    // Usar IA JavaScript inteligente
     setTimeout(() => {
         removeTypingIndicator();
         const response = generateResponse(message);
         addChatMessage(response, 'bot');
-    }, 1500);
+    }, 1200); // Simula processamento
 }
 
 // Função para adicionar mensagem ao chat
@@ -759,18 +1031,48 @@ function removeTypingIndicator() {
     }
 }
 
-// Função para gerar resposta do bot
+// IA Inteligente Melhorada
 function generateResponse(message) {
     const lowerMessage = message.toLowerCase();
+    const cleanMessage = lowerMessage.replace(/\b(o que é|que é|qual|como|onde|quando|por que|significa|explique|fale sobre|me conte sobre)\b/g, '').trim();
     
-    // Remover palavras comuns para melhor matching
-    const cleanMessage = lowerMessage.replace(/\b(o que é|que é|qual|como|onde|quando|por que|significa|signifca)\b/g, '').trim();
+    // Sistema de pontuação para melhor matching
+    let bestMatch = null;
+    let bestScore = 0;
     
-    // Buscar na base de conhecimento (busca exata primeiro)
     for (const [key, value] of Object.entries(chatKnowledge)) {
+        let score = 0;
+        const keywords = key.split(' ');
+        
+        // Pontuação por palavra-chave encontrada
+        keywords.forEach(keyword => {
+            if (cleanMessage.includes(keyword) || lowerMessage.includes(keyword)) {
+                score += 2;
+            }
+        });
+        
+        // Pontuação por correspondência parcial
         if (cleanMessage.includes(key) || lowerMessage.includes(key)) {
-            return `💡 **${key.toUpperCase()}**\n\n${value}`;
+            score += 5;
         }
+        
+        // Pontuação por sinônimos e variações
+        const synonyms = getSynonyms(key);
+        synonyms.forEach(synonym => {
+            if (lowerMessage.includes(synonym)) {
+                score += 3;
+            }
+        });
+        
+        if (score > bestScore) {
+            bestScore = score;
+            bestMatch = { key, value };
+        }
+    }
+    
+    if (bestMatch && bestScore >= 2) {
+        const emoji = getContextualEmoji(bestMatch.key);
+        return `${emoji} **${bestMatch.key.toUpperCase()}**\n\n${bestMatch.value}\n\n💡 *Posso explicar mais detalhes ou temas relacionados!*`;
     }
     
     // Buscar nos documentos cadastrados
@@ -789,9 +1091,10 @@ function generateResponse(message) {
         return response;
     }
     
-    // Respostas contextuais inteligentes
-    if (lowerMessage.includes('calcular') && (lowerMessage.includes('roi') || lowerMessage.includes('retorno'))) {
-        return '📊 **Como calcular ROI:**\n\nFórmula: (Ganho - Investimento) / Investimento x 100\n\nExemplo: Investiu R$ 1.000, ganhou R$ 1.500\nROI = (1.500 - 1.000) / 1.000 x 100 = 50%';
+    // Respostas contextuais inteligentes com IA aprimorada
+    const contextualResponses = getContextualResponse(lowerMessage);
+    if (contextualResponses) {
+        return contextualResponses;
     }
     
     if (lowerMessage.includes('diferença') && lowerMessage.includes('receita') && lowerMessage.includes('faturamento')) {
@@ -816,12 +1119,14 @@ function generateResponse(message) {
     }
     
     // Respostas para cumprimentos
-    if (lowerMessage.includes('oi') || lowerMessage.includes('olá') || lowerMessage.includes('bom dia') || lowerMessage.includes('boa tarde')) {
-        return '😊 Olá! Como posso ajudar você hoje? Posso explicar termos de negócios, sales ops, documentação e muito mais!';
+    // Sistema de cumprimentos inteligente
+    if (isGreeting(lowerMessage)) {
+        return getSmartGreeting();
     }
     
-    if (lowerMessage.includes('obrigad') || lowerMessage.includes('valeu')) {
-        return '😊 Por nada! Fico feliz em ajudar. Se tiver mais dúvidas, é só perguntar!';
+    // Sistema de agradecimentos inteligente
+    if (isThanking(lowerMessage)) {
+        return getSmartThanks();
     }
     
     // Respostas específicas para situações sem chefe
@@ -845,9 +1150,142 @@ function generateResponse(message) {
         return '🏖️ **GUIA DE SOBREVIVÊNCIA - CHEFE DE FÉRIAS**\n\n🚨 **EMERGÊNCIAS:**\n• Identifique seu backup/substituto\n• Tenha lista de contatos importantes\n• Conheça processo de escalação\n\n📅 **PRIORIZAÇÃO:**\n• Use Eisenhower Matrix (urgente vs importante)\n• ASAP = realmente urgente\n• EOD = final do dia\n\n📝 **DOCUMENTAÇÃO:**\n• Registre todas decisões\n• Mantenha audit trail\n• Faça status updates regulares\n\n🤝 **COMUNICAÇÃO:**\n• Informe stakeholders\n• Faça follow-ups\n• Pedir ajuda não é fraqueza!\n\nPrecisa de algo específico? Pergunte!';
     }
     
-    // Resposta padrão mais inteligente
-    const topics = ['faturamento', 'ROI', 'KPI', 'pipeline', 'CRM', 'delegação', 'escalação', 'autonomia', 'troubleshooting', 'priority matrix', 'SOP', 'backup', 'handover', 'ASAP', 'compliance'];
+    // Resposta padrão mais inteligente com temas variados
+    const topics = [
+        // Ciência e Tecnologia
+        'inteligência artificial', 'blockchain', 'fotossíntese', 'DNA', 'energia renovável', 'quantum', 'CRISPR',
+        // História e Cultura  
+        'Segunda Guerra Mundial', 'Independência do Brasil', 'Renascimento', 'civilização egípcia', 'Guerra Fria',
+        // Geografia e Natureza
+        'Amazônia', 'mudança climática', 'biodiversidade', 'placas tectônicas', 'ciclo da água',
+        // Matemática e Física
+        'Teorema de Pitágoras', 'teoria da relatividade', 'número pi', 'leis de Newton', 'buraco negro',
+        // Arte e Literatura
+        'Leonardo da Vinci', 'Shakespeare', 'Machado de Assis', 'impressionismo', 'Van Gogh',
+        // Saúde e Medicina
+        'sistema imunológico', 'exercício físico', 'alimentação saudável', 'vacinas', 'meditação',
+        // Esportes
+        'futebol', 'Pelé', 'Olimpíadas', 'Fórmula 1', 'basquete',
+        // Economia
+        'inflação', 'PIB', 'bolsa de valores', 'criptomoedas', 'Bitcoin',
+        // Outros
+        'filosofia', 'música clássica', 'cinema', 'astronomia', 'sustentabilidade', 'culinária brasileira'
+    ];
+    const randomTopics = topics.sort(() => 0.5 - Math.random()).slice(0, 8);
+    
+    // Detectar se a pergunta parece ser sobre um tópico específico
+    let suggestion = '';
+    if (lowerMessage.includes('história')) {
+        suggestion = '\n\n📚 **Parece que você quer saber sobre história!** Posso falar sobre qualquer período ou evento histórico.';
+    } else if (lowerMessage.includes('ciência') || lowerMessage.includes('científico')) {
+        suggestion = '\n\n🔬 **Interessado em ciência?** Posso explicar desde conceitos básicos até descobertas recentes!';
+    } else if (lowerMessage.includes('tecnologia') || lowerMessage.includes('computador')) {
+        suggestion = '\n\n💻 **Tecnologia é fascinante!** Posso explicar como funcionam desde smartphones até inteligência artificial.';
+    } else if (lowerMessage.includes('saúde') || lowerMessage.includes('corpo')) {
+        suggestion = '\n\n🏥 **Saúde é fundamental!** Posso falar sobre anatomia, doenças, prevenção e bem-estar.';
+    }
+    
+    return generateSmartFallback(message);
+}
+
+// Funções auxiliares da IA
+function getSynonyms(key) {
+    const synonymMap = {
+        'fotossíntese': ['plantas', 'clorofila', 'oxigênio', 'co2'],
+        'dna': ['genética', 'cromossomo', 'hereditariedade', 'genes'],
+        'inteligência artificial': ['ia', 'machine learning', 'algoritmo', 'robô'],
+        'segunda guerra mundial': ['hitler', 'nazismo', 'holocausto', '1939', '1945'],
+        'bitcoin': ['criptomoeda', 'blockchain', 'satoshi', 'mineração'],
+        'exercício físico': ['academia', 'musculação', 'cardio', 'fitness'],
+        'aquecimento global': ['mudança climática', 'efeito estufa', 'co2', 'temperatura']
+    };
+    return synonymMap[key] || [];
+}
+
+function getContextualEmoji(key) {
+    if (key.includes('dna') || key.includes('fotossíntese') || key.includes('evolução')) return '🧬';
+    if (key.includes('história') || key.includes('guerra') || key.includes('brasil')) return '📚';
+    if (key.includes('matemática') || key.includes('física') || key.includes('pi')) return '🔢';
+    if (key.includes('arte') || key.includes('música') || key.includes('cinema')) return '🎨';
+    if (key.includes('saúde') || key.includes('medicina') || key.includes('exercício')) return '🏥';
+    if (key.includes('esporte') || key.includes('futebol') || key.includes('olimpíadas')) return '⚽';
+    if (key.includes('tecnologia') || key.includes('inteligência') || key.includes('blockchain')) return '💻';
+    if (key.includes('economia') || key.includes('dinheiro') || key.includes('investimento')) return '💰';
+    if (key.includes('natureza') || key.includes('ambiente') || key.includes('sustentabilidade')) return '🌱';
+    if (key.includes('espaço') || key.includes('planeta') || key.includes('estrela')) return '🌌';
+    return '💡';
+}
+
+function getContextualResponse(message) {
+    // Respostas específicas para perguntas complexas
+    if (message.includes('calcular') && (message.includes('roi') || message.includes('retorno'))) {
+        return '📊 **CÁLCULO DE ROI**\n\n**Fórmula:** (Ganho - Investimento) ÷ Investimento × 100\n\n**Exemplo prático:**\n• Investimento: R$ 1.000\n• Retorno: R$ 1.500\n• ROI = (1.500 - 1.000) ÷ 1.000 × 100 = 50%\n\n✅ **Interpretação:** ROI positivo = investimento lucrativo!';
+    }
+    
+    if (message.includes('como funciona') && message.includes('fotossíntese')) {
+        return '🌱 **FOTOSSÍNTESE - PROCESSO COMPLETO**\n\n**Equação:** 6CO₂ + 6H₂O + luz solar → C₆H₁₂O₆ + 6O₂\n\n**Etapas:**\n1. 🍃 Folhas absorvem CO₂ do ar\n2. 💧 Raízes captam água do solo\n3. ☀️ Clorofila captura energia solar\n4. ⚗️ Produz glicose (alimento) + oxigênio\n\n🌍 **Importância:** Produz 70% do oxigênio que respiramos!';
+    }
+    
+    if (message.includes('diferença') && message.includes('vírus') && message.includes('bactéria')) {
+        return '🦠 **VÍRUS vs BACTÉRIA - COMPARAÇÃO COMPLETA**\n\n**🦠 VÍRUS:**\n• Não são seres vivos\n• Precisam infectar células\n• Tamanho: 20-300 nanômetros\n• Tratamento: antivirais\n\n**🧫 BACTÉRIAS:**\n• Seres vivos unicelulares\n• Vivem independentemente\n• Tamanho: 0,5-5 micrômetros\n• Tratamento: antibióticos\n\n💊 **Dica:** Antibiótico NÃO trata gripe (vírus)!';
+    }
+    
+    if (message.includes('como') && message.includes('funciona') && message.includes('internet')) {
+        return '🌐 **COMO A INTERNET FUNCIONA**\n\n**Componentes:**\n• 🖥️ Servidores (armazenam sites)\n• 🔄 Roteadores (direcionam dados)\n• 🔌 Cabos/fibra ótica (transporte)\n• 📋 Protocolos (TCP/IP, HTTP)\n\n**Processo:**\n1. Você digita URL\n2. DNS encontra endereço IP\n3. Dados viajam em pacotes\n4. Servidor responde\n\n⚡ **Velocidade:** Tudo em milissegundos!';
+    }
+    
+    return null;
+}
+
+function isGreeting(message) {
+    const greetings = ['oi', 'olá', 'ola', 'bom dia', 'boa tarde', 'boa noite', 'hey', 'e ai'];
+    return greetings.some(greeting => message.includes(greeting));
+}
+
+function getSmartGreeting() {
+    const greetings = [
+        '🤖 **IA INTELIGENTE ATIVA!**\n\nOlá! Sou sua assistente com IA aprimorada. Posso responder sobre QUALQUER assunto com respostas detalhadas e contextuais!',
+        '🧠 **SISTEMA INTELIGENTE ONLINE!**\n\nOi! Tenho conhecimento avançado em ciência, história, tecnologia, arte, esportes e muito mais. Faça sua pergunta!',
+        '✨ **ASSISTENTE UNIVERSAL PRONTO!**\n\nOlá! Desde física quântica até receitas culinárias, posso explicar tudo de forma clara e detalhada. O que te interessa?',
+        '🚀 **IA AVANÇADA ATIVADA!**\n\nOi! Meu sistema detecta contexto e oferece respostas personalizadas. Pergunte sobre qualquer tema!'
+    ];
+    return greetings[Math.floor(Math.random() * greetings.length)];
+}
+
+function isThanking(message) {
+    const thanks = ['obrigad', 'valeu', 'muito bom', 'excelente', 'perfeito', 'ótimo', 'legal'];
+    return thanks.some(thank => message.includes(thank));
+}
+
+function getSmartThanks() {
+    const responses = [
+        '😊 **MISSÃO CUMPRIDA!**\n\nFico feliz que minha IA tenha ajudado! Conhecimento é para ser compartilhado. Mais alguma curiosidade?',
+        '🎉 **SUCESSO!**\n\nAdoro quando consigo explicar bem! Meu sistema está sempre aprendendo. Próxima pergunta?',
+        '✨ **OBJETIVO ALCANÇADO!**\n\nDe nada! Minha IA está programada para dar respostas úteis. Que tal explorar outro tema?',
+        '🤓 **CONHECIMENTO COMPARTILHADO!**\n\nFoi um prazer usar minha inteligência para ajudar! Sempre pronto para mais desafios!'
+    ];
+    return responses[Math.floor(Math.random() * responses.length)];
+}
+
+function generateSmartFallback(message) {
+    const topics = [
+        'inteligência artificial', 'fotossíntese', 'DNA', 'Segunda Guerra Mundial',
+        'Bitcoin', 'Leonardo da Vinci', 'Teorema de Pitágoras', 'sistema imunológico',
+        'Amazônia', 'aquecimento global', 'futebol', 'Olimpíadas', 'Shakespeare',
+        'inflação', 'energia renovável', 'blockchain', 'evolução', 'buraco negro'
+    ];
+    
     const randomTopics = topics.sort(() => 0.5 - Math.random()).slice(0, 6);
     
-    return `🤔 Não encontrei informações específicas sobre isso.\n\n💡 **Posso ajudar com:**\n${randomTopics.map(topic => `• ${topic}`).join('\n')}\n\nTente reformular sua pergunta ou escolha um dos temas acima!`;
+    // Detectar categoria da pergunta
+    let suggestion = '';
+    if (message.includes('história') || message.includes('histórico')) {
+        suggestion = '\n\n📚 **DETECTEI: Interesse em História!** Posso falar sobre qualquer período ou evento histórico.';
+    } else if (message.includes('ciência') || message.includes('científico')) {
+        suggestion = '\n\n🔬 **DETECTEI: Interesse em Ciência!** Posso explicar desde conceitos básicos até descobertas recentes.';
+    } else if (message.includes('tecnologia') || message.includes('computador')) {
+        suggestion = '\n\n💻 **DETECTEI: Interesse em Tecnologia!** Posso explicar como funcionam desde smartphones até IA.';
+    }
+    
+    return `🤔 **ANÁLISE DA IA:** Não encontrei correspondência exata para "${message}".${suggestion}\n\n🧠 **TEMAS DISPONÍVEIS:**\n${randomTopics.map(topic => `• ${topic}`).join('\n')}\n\n💡 **EXEMPLOS OTIMIZADOS:**\n• "O que é ${randomTopics[0]}?"\n• "Como funciona ${randomTopics[1]}?"\n• "Explique ${randomTopics[2]}"\n• "Diferença entre ${randomTopics[3]} e ${randomTopics[4]}"\n\n🔄 **DICA:** Use palavras-chave específicas para respostas mais precisas!`;
 }

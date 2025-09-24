@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sales Ops Hub - Plataforma Profissional</title>
+    <title>Sistema Sales Ops
+    </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -65,14 +66,32 @@
 
         <!-- Seção de Chat -->
         <section id="chat" class="section">
-            <h1>Assistente Inteligente</h1>
+            <h1>Assistente Inteligente Universal</h1>
+            <div class="chat-info">
+                <p>🤖 Pergunte sobre <strong>qualquer assunto</strong>: negócios, tecnologia, ciência, história, cultura, matemática, idiomas e muito mais!</p>
+            </div>
             <div id="chatMessages" class="chat-messages"></div>
             <div class="chat-input">
-                <input type="text" id="chatInput" placeholder="Digite sua dúvida (ex: o que é faturamento?, como calcular ROI?)...">
+                <input type="text" id="chatInput" placeholder="Digite qualquer pergunta... (ex: como funciona a fotossíntese?, o que é inteligência artificial?, história do Brasil)">
                 <button onclick="sendMessage()">Enviar</button>
             </div>
         </section>
     </main>
+
+    <!-- Modal para visualizar aprendizado -->
+    <div id="noteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <span class="close" onclick="closeNoteModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent"></div>
+                <div id="modalTags"></div>
+                <div id="modalDate"></div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

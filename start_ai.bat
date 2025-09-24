@@ -1,0 +1,9 @@
+@echo off
+echo 🚀 Iniciando IA Avançada...
+echo.
+echo Instalando dependências...
+pip install -r requirements.txt
+echo.
+echo Iniciando servidor Python...
+python ai_backend.py
+pause
