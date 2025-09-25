@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Sales Ops
-    </title>
+    <title>Sistema Sales Ops - GE Healthcare</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,7 +12,7 @@
 <body>
     <nav class="navbar">
         <div class="nav-brand">
-            <h2>Sales Ops</h2>
+            <img src="LOGO.png" alt="GE Healthcare Logo" class="nav-logo">
         </div>
         <ul class="nav-menu">
             <li><a href="#home" class="nav-link active">Documentos</a></li>
@@ -67,13 +66,23 @@
         <!-- Seção de Chat -->
         <section id="chat" class="section">
             <h1>Assistente Inteligente Universal</h1>
+            <div class="ai-status">
+                <div class="status-indicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">IA AVANÇADA ATIVA</span>
+                </div>
+                <div class="ai-version">v2.0 - Sistema Inteligente</div>
+            </div>
             <div class="chat-info">
-                <p>🤖 Pergunte sobre <strong>qualquer assunto</strong>: negócios, tecnologia, ciência, história, cultura, matemática, idiomas e muito mais!</p>
+                <p>🤖 <strong>Sistema especializado</strong> em Sales Ops, documentação governamental e conhecimento geral. Respostas contextuais e detalhadas!</p>
             </div>
             <div id="chatMessages" class="chat-messages"></div>
             <div class="chat-input">
-                <input type="text" id="chatInput" placeholder="Digite qualquer pergunta... (ex: como funciona a fotossíntese?, o que é inteligência artificial?, história do Brasil)">
-                <button onclick="sendMessage()">Enviar</button>
+                <input type="text" id="chatInput" placeholder="Digite sua pergunta... (ex: O que é CNDT?, Como calcular ROI?, O que é fotossíntese?)">
+                <button onclick="sendMessage()" id="sendButton">
+                    <span class="button-text">Enviar</span>
+                    <span class="button-loading" style="display: none;">⏳</span>
+                </button>
             </div>
         </section>
     </main>

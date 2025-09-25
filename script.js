@@ -434,7 +434,10 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Show corresponding section
             const targetId = this.getAttribute('href').substring(1);
-            document.getElementById(targetId).classList.add('active');
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
         });
     });
     
@@ -447,8 +450,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Mensagem inicial do chat com IA melhorada
     setTimeout(() => {
-        addChatMessage('🚀 **IA UNIVERSAL ATIVADA!**\n\nOlá! Sou sua assistente com base de conhecimento expandida!\n\n🧠 **NOVA FUNCIONALIDADE:**\n• Digite "conhecimento" para ver TODOS os temas\n• Respostas categorizadas inteligentes\n• Sistema de busca por área\n• +200 assuntos disponíveis\n\n💡 **EXEMPLOS RÁPIDOS:**\n• "O que é fotossíntese?"\n• "Como calcular ROI?"\n• "Fale sobre Segunda Guerra"\n• "Diferença entre vírus e bactéria"\n\n✨ **DICA:** Seja específico para respostas detalhadas!', 'bot');
-    }, 500);
+        addChatMessage('🚀 **SISTEMA SALES OPS - GE HEALTHCARE**\n\n🤖 **IA AVANÇADA ATIVADA!**\n\nOlá! Sou sua assistente inteligente com conhecimento especializado em:\n\n📋 **DOCUMENTAÇÃO:**\n• Certidões e declarações\n• Processos licitatórios\n• Documentos multinacionais\n\n💼 **SALES OPERATIONS:**\n• KPIs e métricas\n• Pipeline e forecast\n• CRM e automação\n\n🧠 **CONHECIMENTO GERAL:**\n• Ciência e tecnologia\n• História e cultura\n• Matemática e física\n\n💡 **EXEMPLOS:**\n• "O que é CNDT?"\n• "Como calcular ROI?"\n• "Explique sales ops"\n• "O que é fotossíntese?"\n\n✨ **DICA:** Digite "conhecimento" para ver todos os temas disponíveis!', 'bot');
+    }, 800);
 
     
     // Event listener para Enter na pesquisa
@@ -1272,9 +1275,18 @@ const chatKnowledge = {
 // Função para enviar mensagem no chat
 function sendMessage() {
     const chatInput = document.getElementById('chatInput');
+    const sendButton = document.getElementById('sendButton');
+    const buttonText = sendButton.querySelector('.button-text');
+    const buttonLoading = sendButton.querySelector('.button-loading');
     const message = chatInput.value.trim();
     
     if (!message) return;
+    
+    // Desabilitar input e mostrar loading
+    chatInput.disabled = true;
+    sendButton.disabled = true;
+    buttonText.style.display = 'none';
+    buttonLoading.style.display = 'inline';
     
     // Adicionar mensagem do usuário
     addChatMessage(message, 'user');
@@ -1288,7 +1300,14 @@ function sendMessage() {
         removeTypingIndicator();
         const response = generateResponse(message);
         addChatMessage(response, 'bot');
-    }, 1200); // Simula processamento
+        
+        // Reabilitar input
+        chatInput.disabled = false;
+        sendButton.disabled = false;
+        buttonText.style.display = 'inline';
+        buttonLoading.style.display = 'none';
+        chatInput.focus();
+    }, Math.random() * 800 + 1000); // Simula processamento variável
 }
 
 // Função para adicionar mensagem ao chat
