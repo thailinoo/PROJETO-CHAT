@@ -157,6 +157,24 @@ CPF: [CPF]`
         ]
     },
     {
+        acronym: "HABILITAÇÃO ECONÔMICO-FINANCEIRA",
+        name: "Habilitação Econômico-Financeira",
+        description: "Documentos necessários para comprovar capacidade financeira de empresa em licitações.",
+        documentList: [
+            "Balanço Patrimonial do último exercício",
+            "Demonstração do Resultado do Exercício (DRE)",
+            "Certidão Negativa de Falência e Concordata",
+            "Certidão Negativa de Recuperação Judicial",
+            "Demonstrações Contábeis registradas na Junta Comercial",
+            "Declaração de Patrimônio Líquido",
+            "Comprovação de Capital Social integralizado",
+            "Índices de Liquidez Geral ≥ 1,0",
+            "Índices de Liquidez Corrente ≥ 1,0",
+            "Grau de Endividamento ≤ 0,5",
+            "Garantia (quando exigida no edital)"
+        ]
+    },
+    {
         acronym: "MULTINACIONAL",
         name: "Documentos Empresa Multinacional",
         description: "Documentos necessários para empresas multinacionais operando no Brasil.",
@@ -429,7 +447,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Mensagem inicial do chat com IA melhorada
     setTimeout(() => {
-        addChatMessage('🚀 **IA INTELIGENTE ATIVADA!**\n\nOlá! Sou sua assistente com sistema de IA aprimorado!\n\n🧠 **Capacidades avançadas:**\n• Detecção de contexto\n• Respostas personalizadas\n• Sistema de pontuação inteligente\n• Base expandida de conhecimento\n\n💡 **Posso responder sobre:**\n• 🔬 Ciência e tecnologia\n• 📚 História e cultura\n• 🎨 Arte e literatura\n• ⚽ Esportes e entretenimento\n• 💰 Economia e negócios\n• 🌱 Meio ambiente\n• 🏥 Saúde e medicina\n\n✨ Faça qualquer pergunta - minha IA está pronta!', 'bot');
+        addChatMessage('🚀 **IA UNIVERSAL ATIVADA!**\n\nOlá! Sou sua assistente com base de conhecimento expandida!\n\n🧠 **NOVA FUNCIONALIDADE:**\n• Digite "conhecimento" para ver TODOS os temas\n• Respostas categorizadas inteligentes\n• Sistema de busca por área\n• +200 assuntos disponíveis\n\n💡 **EXEMPLOS RÁPIDOS:**\n• "O que é fotossíntese?"\n• "Como calcular ROI?"\n• "Fale sobre Segunda Guerra"\n• "Diferença entre vírus e bactéria"\n\n✨ **DICA:** Seja específico para respostas detalhadas!', 'bot');
     }, 500);
 
     
@@ -439,6 +457,21 @@ document.addEventListener('DOMContentLoaded', function() {
             searchDocument();
         }
     });
+    
+    // Placeholder dinâmico para busca
+    const searchInput = document.getElementById('searchInput');
+    const placeholders = [
+        'Digite "documentos" para ver todos...',
+        'Ex: CNDT, CND, declaração...',
+        'Busque por: licitação, fiscal...',
+        'Digite qualquer documento...'
+    ];
+    let placeholderIndex = 0;
+    
+    setInterval(() => {
+        searchInput.placeholder = placeholders[placeholderIndex];
+        placeholderIndex = (placeholderIndex + 1) % placeholders.length;
+    }, 3000);
     
     // Event listener para Enter nas tarefas
     document.getElementById('taskInput').addEventListener('keypress', function(e) {
@@ -465,44 +498,109 @@ function searchDocument() {
         return;
     }
     
-    const results = documents.filter(doc => 
+    // Termos que mostram todos os documentos
+    const showAllTerms = ['documento', 'documentos', 'buscar', 'lista', 'todos', 'ver todos', 'mostrar', 'listar'];
+    const shouldShowAll = showAllTerms.some(term => searchTerm.includes(term));
+    
+    let results;
+    
+    if (shouldShowAll) {
+        // Mostrar todos os documentos organizados por categoria
+        results = documents;
+        const totalDocs = results.length;
+        
+        const resultsHTML = `
+            <div class="search-header">
+                <h3>📋 Todos os Documentos Disponíveis (${totalDocs})</h3>
+                <p>Lista completa de documentos governamentais e declarações</p>
+            </div>
+            ${results.map(doc => `
+                <div class="document-card">
+                    <div class="document-title">${doc.acronym} - ${doc.name}</div>
+                    <div class="document-description">${doc.description}</div>
+                    ${doc.template ? `
+                        <div class="template-section">
+                            <strong>📄 Modelo de Declaração:</strong>
+                            <div class="template-content">${doc.template}</div>
+                            <button class="copy-btn" onclick="copyTemplate('${doc.acronym}')">📋 Copiar Modelo</button>
+                        </div>
+                    ` : ''}
+                    ${doc.documentList ? `
+                        <div class="document-list">
+                            <h4>📋 Documentos Necessários:</h4>
+                            <ul>
+                                ${doc.documentList.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('')}
+        `;
+        
+        resultsContainer.innerHTML = resultsHTML;
+        return;
+    }
+    
+    // Busca específica
+    results = documents.filter(doc => 
         doc.acronym.toLowerCase().includes(searchTerm) ||
         doc.name.toLowerCase().includes(searchTerm) ||
+        doc.description.toLowerCase().includes(searchTerm) ||
         (searchTerm.includes('multinacional') && doc.acronym === 'MULTINACIONAL') ||
         (searchTerm.includes('empresa estrangeira') && doc.acronym === 'MULTINACIONAL') ||
         (searchTerm.includes('trabalho') && ['CTPS', 'PIS', 'CIPA', 'PPRA', 'CAT'].includes(doc.acronym)) ||
         (searchTerm.includes('saude') && ['PCMSO', 'PPRA', 'CIPA'].includes(doc.acronym)) ||
         (searchTerm.includes('ambiental') && ['LICENÇA AMBIENTAL', 'PPRA'].includes(doc.acronym)) ||
         (searchTerm.includes('declaracao') && doc.name.toLowerCase().includes('declaração')) ||
-        (searchTerm.includes('procuracao') && doc.acronym === 'PROCURAÇÃO')
+        (searchTerm.includes('procuracao') && doc.acronym === 'PROCURAÇÃO') ||
+        (searchTerm.includes('licitacao') && ['HABILITAÇÃO JURÍDICA', 'HABILITAÇÃO ECONÔMICO-FINANCEIRA', 'REGULARIDADE FISCAL'].includes(doc.acronym)) ||
+        (searchTerm.includes('financeira') && doc.acronym === 'HABILITAÇÃO ECONÔMICO-FINANCEIRA') ||
+        (searchTerm.includes('juridica') && doc.acronym === 'HABILITAÇÃO JURÍDICA') ||
+        (searchTerm.includes('fiscal') && doc.acronym === 'REGULARIDADE FISCAL') ||
+        (doc.documentList && doc.documentList.some(item => item.toLowerCase().includes(searchTerm)))
     );
     
     if (results.length === 0) {
-        resultsContainer.innerHTML = '<div class="no-results">Nenhum documento encontrado</div>';
+        resultsContainer.innerHTML = `
+            <div class="no-results">
+                <h3>❌ Nenhum documento encontrado para "${searchTerm}"</h3>
+                <p>💡 <strong>Dicas:</strong></p>
+                <ul>
+                    <li>Digite "documentos" para ver todos</li>
+                    <li>Use siglas como: CNDT, CND, CNPJ</li>
+                    <li>Termos como: declaração, certidão, habilitação</li>
+                </ul>
+            </div>
+        `;
         return;
     }
     
-    const resultsHTML = results.map(doc => `
-        <div class="document-card">
-            <div class="document-title">${doc.acronym} - ${doc.name}</div>
-            <div class="document-description">${doc.description}</div>
-            ${doc.template ? `
-                <div class="template-section">
-                    <strong>📄 Modelo de Declaração:</strong>
-                    <div class="template-content">${doc.template}</div>
-                    <button class="copy-btn" onclick="copyTemplate('${doc.acronym}')">📋 Copiar Modelo</button>
-                </div>
-            ` : ''}
-            ${doc.documentList ? `
-                <div class="document-list">
-                    <h4>📋 Documentos Necessários:</h4>
-                    <ul>
-                        ${doc.documentList.map(item => `<li>${item}</li>`).join('')}
-                    </ul>
-                </div>
-            ` : ''}
+    const resultsHTML = `
+        <div class="search-header">
+            <h3>🔍 Resultados para "${searchTerm}" (${results.length})</h3>
         </div>
-    `).join('');
+        ${results.map(doc => `
+            <div class="document-card">
+                <div class="document-title">${doc.acronym} - ${doc.name}</div>
+                <div class="document-description">${doc.description}</div>
+                ${doc.template ? `
+                    <div class="template-section">
+                        <strong>📄 Modelo de Declaração:</strong>
+                        <div class="template-content">${doc.template}</div>
+                        <button class="copy-btn" onclick="copyTemplate('${doc.acronym}')">📋 Copiar Modelo</button>
+                    </div>
+                ` : ''}
+                ${doc.documentList ? `
+                    <div class="document-list">
+                        <h4>📋 Documentos Necessários:</h4>
+                        <ul>
+                            ${doc.documentList.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+            </div>
+        `).join('')}
+    `;
     
     resultsContainer.innerHTML = resultsHTML;
 }
@@ -1235,6 +1333,14 @@ function generateResponse(message) {
     const lowerMessage = message.toLowerCase();
     const cleanMessage = lowerMessage.replace(/\b(o que é|que é|qual|como|onde|quando|por que|significa|explique|fale sobre|me conte sobre)\b/g, '').trim();
     
+    // Verificar se é pergunta geral sobre conhecimento
+    const generalQuestions = ['o que você sabe', 'que assuntos', 'sobre o que', 'temas', 'conhecimento', 'me ensine', 'aprenda', 'estude'];
+    const isGeneralQuestion = generalQuestions.some(q => lowerMessage.includes(q));
+    
+    if (isGeneralQuestion) {
+        return getKnowledgeOverview();
+    }
+    
     // Sistema de pontuação para melhor matching
     let bestMatch = null;
     let bestScore = 0;
@@ -1253,6 +1359,16 @@ function generateResponse(message) {
         // Pontuação por correspondência parcial
         if (cleanMessage.includes(key) || lowerMessage.includes(key)) {
             score += 5;
+        }
+        
+        // Pontuação por correspondência exata
+        if (cleanMessage === key || lowerMessage === key) {
+            score += 10;
+        }
+        
+        // Pontuação extra para matches no início da frase
+        if (lowerMessage.startsWith(key) || cleanMessage.startsWith(key)) {
+            score += 3;
         }
         
         // Pontuação por sinônimos e variações
@@ -1349,39 +1465,10 @@ function generateResponse(message) {
         return '🏖️ **GUIA DE SOBREVIVÊNCIA - CHEFE DE FÉRIAS**\n\n🚨 **EMERGÊNCIAS:**\n• Identifique seu backup/substituto\n• Tenha lista de contatos importantes\n• Conheça processo de escalação\n\n📅 **PRIORIZAÇÃO:**\n• Use Eisenhower Matrix (urgente vs importante)\n• ASAP = realmente urgente\n• EOD = final do dia\n\n📝 **DOCUMENTAÇÃO:**\n• Registre todas decisões\n• Mantenha audit trail\n• Faça status updates regulares\n\n🤝 **COMUNICAÇÃO:**\n• Informe stakeholders\n• Faça follow-ups\n• Pedir ajuda não é fraqueza!\n\nPrecisa de algo específico? Pergunte!';
     }
     
-    // Resposta padrão mais inteligente com temas variados
-    const topics = [
-        // Ciência e Tecnologia
-        'inteligência artificial', 'blockchain', 'fotossíntese', 'DNA', 'energia renovável', 'quantum', 'CRISPR',
-        // História e Cultura  
-        'Segunda Guerra Mundial', 'Independência do Brasil', 'Renascimento', 'civilização egípcia', 'Guerra Fria',
-        // Geografia e Natureza
-        'Amazônia', 'mudança climática', 'biodiversidade', 'placas tectônicas', 'ciclo da água',
-        // Matemática e Física
-        'Teorema de Pitágoras', 'teoria da relatividade', 'número pi', 'leis de Newton', 'buraco negro',
-        // Arte e Literatura
-        'Leonardo da Vinci', 'Shakespeare', 'Machado de Assis', 'impressionismo', 'Van Gogh',
-        // Saúde e Medicina
-        'sistema imunológico', 'exercício físico', 'alimentação saudável', 'vacinas', 'meditação',
-        // Esportes
-        'futebol', 'Pelé', 'Olimpíadas', 'Fórmula 1', 'basquete',
-        // Economia
-        'inflação', 'PIB', 'bolsa de valores', 'criptomoedas', 'Bitcoin',
-        // Outros
-        'filosofia', 'música clássica', 'cinema', 'astronomia', 'sustentabilidade', 'culinária brasileira'
-    ];
-    const randomTopics = topics.sort(() => 0.5 - Math.random()).slice(0, 8);
-    
-    // Detectar se a pergunta parece ser sobre um tópico específico
-    let suggestion = '';
-    if (lowerMessage.includes('história')) {
-        suggestion = '\n\n📚 **Parece que você quer saber sobre história!** Posso falar sobre qualquer período ou evento histórico.';
-    } else if (lowerMessage.includes('ciência') || lowerMessage.includes('científico')) {
-        suggestion = '\n\n🔬 **Interessado em ciência?** Posso explicar desde conceitos básicos até descobertas recentes!';
-    } else if (lowerMessage.includes('tecnologia') || lowerMessage.includes('computador')) {
-        suggestion = '\n\n💻 **Tecnologia é fascinante!** Posso explicar como funcionam desde smartphones até inteligência artificial.';
-    } else if (lowerMessage.includes('saúde') || lowerMessage.includes('corpo')) {
-        suggestion = '\n\n🏥 **Saúde é fundamental!** Posso falar sobre anatomia, doenças, prevenção e bem-estar.';
+    // Busca por categoria quando não encontra match específico
+    const categoryMatch = getCategoryMatch(lowerMessage);
+    if (categoryMatch) {
+        return categoryMatch;
     }
     
     return generateSmartFallback(message);
@@ -1466,25 +1553,79 @@ function getSmartThanks() {
     return responses[Math.floor(Math.random() * responses.length)];
 }
 
-function generateSmartFallback(message) {
-    const topics = [
-        'inteligência artificial', 'fotossíntese', 'DNA', 'Segunda Guerra Mundial',
-        'Bitcoin', 'Leonardo da Vinci', 'Teorema de Pitágoras', 'sistema imunológico',
-        'Amazônia', 'aquecimento global', 'futebol', 'Olimpíadas', 'Shakespeare',
-        'inflação', 'energia renovável', 'blockchain', 'evolução', 'buraco negro'
-    ];
+function getKnowledgeOverview() {
+    const categories = {
+        '🔬 CIÊNCIA & TECNOLOGIA': ['inteligência artificial', 'blockchain', 'fotossíntese', 'DNA', 'energia renovável', 'quantum'],
+        '📚 HISTÓRIA & CULTURA': ['Segunda Guerra Mundial', 'Independência do Brasil', 'Renascimento', 'civilização egípcia'],
+        '🌍 GEOGRAFIA & NATUREZA': ['Amazônia', 'mudança climática', 'biodiversidade', 'placas tectônicas'],
+        '🔢 MATEMÁTICA & FÍSICA': ['Teorema de Pitágoras', 'teoria da relatividade', 'número pi', 'leis de Newton'],
+        '🎨 ARTE & LITERATURA': ['Leonardo da Vinci', 'Shakespeare', 'Machado de Assis', 'impressionismo'],
+        '🏥 SAÚDE & MEDICINA': ['sistema imunológico', 'exercício físico', 'alimentação saudável', 'vacinas'],
+        '⚽ ESPORTES': ['futebol', 'Pelé', 'Olimpíadas', 'Fórmula 1', 'basquete'],
+        '💰 ECONOMIA & NEGÓCIOS': ['inflação', 'PIB', 'bolsa de valores', 'ROI', 'KPI', 'sales ops'],
+        '🌌 ASTRONOMIA': ['sistema solar', 'Via Láctea', 'Big Bang', 'buraco negro'],
+        '🌱 MEIO AMBIENTE': ['sustentabilidade', 'reciclagem', 'energia solar', 'aquecimento global']
+    };
     
-    const randomTopics = topics.sort(() => 0.5 - Math.random()).slice(0, 6);
+    let response = '🧠 **MINHA BASE DE CONHECIMENTO COMPLETA**\n\n';
     
-    // Detectar categoria da pergunta
-    let suggestion = '';
-    if (message.includes('história') || message.includes('histórico')) {
-        suggestion = '\n\n📚 **DETECTEI: Interesse em História!** Posso falar sobre qualquer período ou evento histórico.';
-    } else if (message.includes('ciência') || message.includes('científico')) {
-        suggestion = '\n\n🔬 **DETECTEI: Interesse em Ciência!** Posso explicar desde conceitos básicos até descobertas recentes.';
-    } else if (message.includes('tecnologia') || message.includes('computador')) {
-        suggestion = '\n\n💻 **DETECTEI: Interesse em Tecnologia!** Posso explicar como funcionam desde smartphones até IA.';
+    for (const [category, topics] of Object.entries(categories)) {
+        response += `${category}\n${topics.map(topic => `• ${topic}`).join('\n')}\n\n`;
     }
     
-    return `🤔 **ANÁLISE DA IA:** Não encontrei correspondência exata para "${message}".${suggestion}\n\n🧠 **TEMAS DISPONÍVEIS:**\n${randomTopics.map(topic => `• ${topic}`).join('\n')}\n\n💡 **EXEMPLOS OTIMIZADOS:**\n• "O que é ${randomTopics[0]}?"\n• "Como funciona ${randomTopics[1]}?"\n• "Explique ${randomTopics[2]}"\n• "Diferença entre ${randomTopics[3]} e ${randomTopics[4]}"\n\n🔄 **DICA:** Use palavras-chave específicas para respostas mais precisas!`;
+    response += '💡 **COMO USAR:**\n• Faça perguntas específicas: "O que é fotossíntese?"\n• Use "como funciona": "Como funciona blockchain?"\n• Peça explicações: "Explique DNA"\n• Compare: "Diferença entre vírus e bactéria"\n\n🚀 **EXEMPLOS PRÁTICOS:**\n• "Como calcular ROI?"\n• "O que é inteligência artificial?"\n• "Fale sobre Segunda Guerra Mundial"\n• "Como funciona fotossíntese?"';
+    
+    return response;
+}
+
+function getCategoryMatch(message) {
+    // Respostas por categoria quando não encontra match específico
+    if (message.includes('história') || message.includes('histórico') || message.includes('guerra') || message.includes('brasil')) {
+        const historyTopics = ['Segunda Guerra Mundial', 'Independência do Brasil', 'Renascimento', 'civilização egípcia', 'Guerra Fria', 'Revolução Industrial'];
+        const randomHistory = historyTopics.sort(() => 0.5 - Math.random()).slice(0, 4);
+        return `📚 **HISTÓRIA - MINHA ESPECIALIDADE!**\n\nPosso explicar qualquer período ou evento histórico:\n\n${randomHistory.map(topic => `• ${topic}`).join('\n')}\n\n💡 **Exemplos de perguntas:**\n• "O que foi a ${randomHistory[0]}?"\n• "Como aconteceu a ${randomHistory[1]}?"\n• "Fale sobre ${randomHistory[2]}"\n\n🎯 **Seja específico para respostas detalhadas!**`;
+    }
+    
+    if (message.includes('ciência') || message.includes('científico') || message.includes('biologia') || message.includes('física')) {
+        const scienceTopics = ['fotossíntese', 'DNA', 'inteligência artificial', 'energia renovável', 'quantum', 'evolução'];
+        const randomScience = scienceTopics.sort(() => 0.5 - Math.random()).slice(0, 4);
+        return `🔬 **CIÊNCIA - ÁREA DE CONHECIMENTO!**\n\nPosso explicar desde conceitos básicos até descobertas recentes:\n\n${randomScience.map(topic => `• ${topic}`).join('\n')}\n\n💡 **Exemplos de perguntas:**\n• "Como funciona ${randomScience[0]}?"\n• "O que é ${randomScience[1]}?"\n• "Explique ${randomScience[2]}"\n\n🧬 **Ciência é fascinante - pergunte qualquer coisa!**`;
+    }
+    
+    if (message.includes('tecnologia') || message.includes('computador') || message.includes('internet') || message.includes('digital')) {
+        const techTopics = ['inteligência artificial', 'blockchain', 'internet das coisas', 'realidade virtual', '5G', 'computação quântica'];
+        const randomTech = techTopics.sort(() => 0.5 - Math.random()).slice(0, 4);
+        return `💻 **TECNOLOGIA - MINHA PAIXÃO!**\n\nPosso explicar desde smartphones até IA avançada:\n\n${randomTech.map(topic => `• ${topic}`).join('\n')}\n\n💡 **Exemplos de perguntas:**\n• "Como funciona ${randomTech[0]}?"\n• "O que é ${randomTech[1]}?"\n• "Explique ${randomTech[2]}"\n\n🚀 **Tecnologia move o mundo - vamos explorar!**`;
+    }
+    
+    if (message.includes('saúde') || message.includes('corpo') || message.includes('medicina') || message.includes('doença')) {
+        const healthTopics = ['sistema imunológico', 'exercício físico', 'alimentação saudável', 'vacinas', 'vitaminas', 'sono'];
+        const randomHealth = healthTopics.sort(() => 0.5 - Math.random()).slice(0, 4);
+        return `🏥 **SAÚDE - FUNDAMENTAL PARA VIDA!**\n\nPosso falar sobre prevenção, anatomia e bem-estar:\n\n${randomHealth.map(topic => `• ${topic}`).join('\n')}\n\n💡 **Exemplos de perguntas:**\n• "Como funciona ${randomHealth[0]}?"\n• "Benefícios do ${randomHealth[1]}"\n• "O que são ${randomHealth[2]}?"\n\n💪 **Saúde é riqueza - cuide-se bem!**`;
+    }
+    
+    if (message.includes('negócio') || message.includes('empresa') || message.includes('vendas') || message.includes('marketing')) {
+        const businessTopics = ['ROI', 'KPI', 'sales ops', 'pipeline', 'CRM', 'lead', 'conversion rate', 'churn'];
+        const randomBusiness = businessTopics.sort(() => 0.5 - Math.random()).slice(0, 4);
+        return `💼 **NEGÓCIOS - ÁREA ESTRATÉGICA!**\n\nPosso explicar métricas, processos e estratégias:\n\n${randomBusiness.map(topic => `• ${topic}`).join('\n')}\n\n💡 **Exemplos de perguntas:**\n• "Como calcular ${randomBusiness[0]}?"\n• "O que é ${randomBusiness[1]}?"\n• "Como melhorar ${randomBusiness[2]}?"\n\n📈 **Sucesso nos negócios com conhecimento!**`;
+    }
+    
+    return null;
+}
+
+function generateSmartFallback(message) {
+    const allTopics = Object.keys(chatKnowledge);
+    const randomTopics = allTopics.sort(() => 0.5 - Math.random()).slice(0, 8);
+    
+    // Sugestões inteligentes baseadas na mensagem
+    let smartSuggestions = [];
+    if (message.includes('como')) {
+        smartSuggestions = ['Como funciona fotossíntese?', 'Como calcular ROI?', 'Como funciona blockchain?'];
+    } else if (message.includes('que') || message.includes('o que')) {
+        smartSuggestions = ['O que é DNA?', 'O que é inteligência artificial?', 'O que foi Segunda Guerra Mundial?'];
+    } else {
+        smartSuggestions = ['Explique fotossíntese', 'Fale sobre Bitcoin', 'Diferença entre vírus e bactéria'];
+    }
+    
+    return `🤔 **NÃO ENCONTREI MATCH PARA:** "${message}"\n\n🧠 **TEMAS DISPONÍVEIS (${allTopics.length}+ assuntos):**\n${randomTopics.map(topic => `• ${topic}`).join('\n')}\n\n💡 **SUGESTÕES INTELIGENTES:**\n${smartSuggestions.map(s => `• "${s}"`).join('\n')}\n\n🔍 **DICAS PARA MELHORES RESPOSTAS:**\n• Use termos específicos\n• Faça perguntas diretas\n• Digite "conhecimento" para ver todos os temas\n\n🚀 **Tenho ${allTopics.length}+ assuntos na minha base de dados!**`;
 }
